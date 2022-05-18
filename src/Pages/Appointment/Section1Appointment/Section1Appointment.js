@@ -8,11 +8,11 @@ const Section1Appointment = ({ date, setDate }) => {
     return (
         <div className="hero min-h-screen bg-[url('/src/assets/images/bg.png')] bg-no-repeat bg-contain bg-left-top">
 
-            <div className="hero-content flex-col lg:flex-row-reverse">
+            <div className="hero-content gap-11 flex-col lg:flex-row-reverse">
 
                 <img src={chair} className="max-w-lg rounded-lg shadow-2xl" alt='Dentist Chair' />
 
-                <div className='pr-11 bg-secondary rounded'>
+                <div className=' bg-secondary rounded'>
                     <DayPicker
                         mode="single"
                         selected={date}
