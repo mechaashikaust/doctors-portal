@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init'
 import { useForm } from "react-hook-form";
 import Loading from '../../Shared/Loading/Loading';
@@ -9,6 +9,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 const Login = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const [email, setEmail] = useState('');
 
     {/***************React Firebase Hooks - Auth*****************/ }
     const [
@@ -25,18 +26,25 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
+    const [
+        sendPasswordResetEmail,
+        sending
+    ] = useSendPasswordResetEmail(auth);
+
+    const emailRef = useRef('');
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
+    useEffect(() => {
+        if (user || googleUser) {
 
-    if (user || googleUser) {
+            navigate(from, { replace: true });
 
-        navigate(from, { replace: true });
+        }
+    }, [user, googleUser, from, navigate]);
 
-    }
-
-    if (loading || googleLoading) {
+    if (loading || googleLoading || sending) {
         return <Loading></Loading>
     }
 
@@ -51,9 +59,24 @@ const Login = () => {
 
 
     const onSubmit = data => {
-
         signInWithEmailAndPassword(data.email, data.password);
+        // console.log(data.email);
     };
+
+    
+
+    const resetPassword = async () => {
+        const email = emailRef.current.value;
+        console.log(email);
+        if (email) {
+            await sendPasswordResetEmail(email);
+            alert('Sent email');
+        }
+        else{
+            alert('Please Enter your Email Address')
+        }
+    }
+
 
     return (
         <div className='flex justify-center items-center h-screen'>
@@ -87,6 +110,7 @@ const Login = () => {
                                     }
                                 }
                                 )}
+                            ref={emailRef}
 
                             />
                             <label>
@@ -125,6 +149,15 @@ const Login = () => {
                             {/***************Password INPUT FIELD END*/}
 
                         </div>
+
+                        <p className='mt-2'>
+                            <small>
+                                Forget Password?
+                                <Link to="/login" className="text-primary text-decoration-none" onClick={() => resetPassword(email)}>
+                                    Reset Password
+                                </Link>
+                            </small>
+                        </p>
 
                         {signInError}
 

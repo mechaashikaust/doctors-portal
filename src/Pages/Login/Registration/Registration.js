@@ -24,7 +24,7 @@ const Registration = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification:true});
 
     const [
         updateProfile,
@@ -36,7 +36,7 @@ const Registration = () => {
 
     if (user || googleUser) {
 
-        console.log(googleUser);
+        // console.log(googleUser, user);
 
     }
 
