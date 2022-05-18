@@ -1,20 +1,57 @@
 import { format } from 'date-fns';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast, ToastContainer } from 'react-toastify';
 import auth from '../../../firebase.init';
 
-const BookingModal = ({ date, treatment, setTreatment }) => {
+const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
 
     const { _id, name, slots } = treatment;
     const [user, loading, error] = useAuthState(auth);
+    const formattedDate = format(date, 'PP');
 
     const handleBooking = event => {
         event.preventDefault();
         const slot = event.target.slot.value;
-        console.log(_id, name, slot);
-        setTreatment(null);
+
+        // {2} Booking data for sending to DB
+        const booking = {
+            treatmentId: _id,
+            treatment: name,
+            date: formattedDate,
+            slot,
+            patient: user.email,
+            patientName: user.displayName,
+            phone: event.target.phone.value
+        }
+
+        fetch('http://localhost:5000/booking', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(booking)
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.success) {
+                    toast(`Appointment is set, ${formattedDate} at ${slot}`);
+                }
+                else{
+                    toast.error(`Already had an appointment on ${data.booking?.date} at ${data.booking?.slot}`);
+                }
+
+                // To Close The Modal
+                refetch();
+                setTreatment(null);
+
+            })
+        // {2} Booking data for sending to DB //*********** END */
+
+
     }
-console.log(user);
+    console.log(user);
     return (
         <div>
 
@@ -46,7 +83,7 @@ console.log(user);
 
                 </div>
             </div>
-
+            <ToastContainer></ToastContainer>
         </div>
     );
 };

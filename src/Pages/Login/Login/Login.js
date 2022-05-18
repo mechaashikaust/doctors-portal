@@ -9,7 +9,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 const Login = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [email, setEmail] = useState('');
+    // const [email, setEmail] = useState('');
 
     {/***************React Firebase Hooks - Auth*****************/ }
     const [
@@ -26,15 +26,17 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-    const [
-        sendPasswordResetEmail,
-        sending
-    ] = useSendPasswordResetEmail(auth);
+    // const [
+    //     sendPasswordResetEmail,
+    //     sending
+    // ] = useSendPasswordResetEmail(auth);
 
-    const emailRef = useRef('');
+
+    // const emailRef = useRef('');
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+     
 
     useEffect(() => {
         if (user || googleUser) {
@@ -44,7 +46,7 @@ const Login = () => {
         }
     }, [user, googleUser, from, navigate]);
 
-    if (loading || googleLoading || sending) {
+    if (loading || googleLoading) {
         return <Loading></Loading>
     }
 
@@ -60,23 +62,20 @@ const Login = () => {
 
     const onSubmit = data => {
         signInWithEmailAndPassword(data.email, data.password);
-        // console.log(data.email);
     };
 
-    
 
-    const resetPassword = async () => {
-        const email = emailRef.current.value;
-        console.log(email);
-        if (email) {
-            await sendPasswordResetEmail(email);
-            alert('Sent email');
-        }
-        else{
-            alert('Please Enter your Email Address')
-        }
-    }
 
+    // const resetPassword = async () => {
+    //     const email = emailRef.current.value;
+    //     if (email) {
+    //         await sendPasswordResetEmail(email);
+    //         toast('Sent email');
+    //     }
+    //     else{
+    //         toast('Please Enter your Email Address')
+    //     }
+    // }
 
     return (
         <div className='flex justify-center items-center h-screen'>
@@ -95,7 +94,7 @@ const Login = () => {
 
                             </label>
                             <input
-
+                                // ref={emailRef}
                                 type="email"
                                 placeholder="Your Email"
                                 className="input input-bordered w-full max-w-xs"
@@ -110,8 +109,8 @@ const Login = () => {
                                     }
                                 }
                                 )}
-                            ref={emailRef}
 
+                                
                             />
                             <label>
                                 {errors.email?.type === 'required' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
@@ -150,14 +149,14 @@ const Login = () => {
 
                         </div>
 
-                        <p className='mt-2'>
+                        {/* <p className='mt-2'>
                             <small>
                                 Forget Password?
                                 <Link to="/login" className="text-primary text-decoration-none" onClick={() => resetPassword(email)}>
                                     Reset Password
                                 </Link>
                             </small>
-                        </p>
+                        </p> */}
 
                         {signInError}
 
