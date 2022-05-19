@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Loading from '../../Shared/Loading/Loading';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUpdateProfile } from 'react-firebase-hooks/auth';
+import useToken from '../../../hooks/useToken';
 
 const Registration = () => {
 
@@ -32,11 +33,13 @@ const Registration = () => {
         updateError
     ] = useUpdateProfile(auth);
 
+    const [token] = useToken(user || googleUser);
+
     const navigate = useNavigate();
 
-    if (user || googleUser) {
+    if (token) {
 
-        // console.log(googleUser, user);
+        navigate('/');
 
     }
 
@@ -58,7 +61,7 @@ const Registration = () => {
 
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        navigate('/');
+        
     };
 
     return (

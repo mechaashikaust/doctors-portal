@@ -10,20 +10,26 @@ const MyAppointments = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(`http://localhost:5000/booking?patient=${user.email}`)
+
+            // {4} My Appointemnts with verifying JWT
+
+            fetch(`http://localhost:5000/booking?patient=${user.email}`, {
+                method: 'GET', 
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
                 .then(res => res.json())
                 .then(data => setAppointments(data));
         }
     }, [user]);
 
-    console.log(appointments);
-
     return (
         <div>
             <h2>MyAppointments: {appointments.length}</h2>
 
-            <div class="overflow-x-auto">
-                <table class="table w-full">
+            <div className="overflow-x-auto">
+                <table className="table w-full">
                     {/* <!-- head --> */}
                     <thead>
                         <tr>
