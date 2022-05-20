@@ -14,13 +14,13 @@ const Section2Appointment = ({ date }) => {
     const formattedDate = format(date, 'PP');
 
     const { isLoading, refetch, data: services } = useQuery(['available', formattedDate], () =>
-        fetch(`http://localhost:5000/available?date=${formattedDate}`)
+        fetch(`https://fathomless-ridge-60823.herokuapp.com/available?date=${formattedDate}`)
             .then(res => res.json())
     )
     if (isLoading) return <Loading></Loading>
 
     // useEffect(() => {
-    //     fetch(`http://localhost:5000/available?date=${formattedDate}`)
+    //     fetch(`https://fathomless-ridge-60823.herokuapp.com/available?date=${formattedDate}`)
     //         .then(response => response.json())
     //         .then(data => setServices(data));
     // }, [formattedDate]);

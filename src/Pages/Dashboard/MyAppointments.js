@@ -16,16 +16,16 @@ const MyAppointments = () => {
 
             // {4} My Appointemnts with verifying JWT
 
-            fetch(`http://localhost:5000/booking?patient=${user.email}`, {
-                method: 'GET', 
+            fetch(`https://fathomless-ridge-60823.herokuapp.com/booking?patient=${user.email}`, {
+                method: 'GET',
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
                 .then(res => {
-                   
 
-                    if(res.status === 401 || res.status === 403){
+
+                    if (res.status === 401 || res.status === 403) {
                         signOut(auth);
                         localStorage.removeItem('accessToken');
                         navigate('/')
@@ -59,7 +59,7 @@ const MyAppointments = () => {
                     <tbody>
                         {
                             appointments.map((appointment, index) =>
-                                <tr  key={appointment._id}>
+                                <tr key={appointment._id}>
                                     <th>{index + 1}</th>
                                     <td>{appointment.patientName}</td>
                                     <td>{appointment.date}</td>

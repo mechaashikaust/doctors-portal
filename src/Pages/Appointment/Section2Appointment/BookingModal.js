@@ -38,7 +38,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
                 if (data.success) {
                     toast(`Appointment is set, ${formattedDate} at ${slot}`);
                 }
-                else{
+                else {
                     toast.error(`Already had an appointment on ${data.booking?.date} at ${data.booking?.slot}`);
                 }
 

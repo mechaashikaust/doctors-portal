@@ -8,7 +8,7 @@ const Users = () => {
 
     // {5} get All Users
     const { isLoading, refetch, data: users } = useQuery(['users'], () =>
-        fetch(`http://localhost:5000/user`, {
+        fetch(`https://fathomless-ridge-60823.herokuapp.com/user`, {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`

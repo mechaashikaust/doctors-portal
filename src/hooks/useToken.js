@@ -14,7 +14,7 @@ const useToken = user => {
 
             // {3} users set to the DB, can't login same email twice with 3 login methods (login, registratin, googlesignin)
 
-            fetch(`http://localhost:5000/user/${email}`, {
+            fetch(`https://fathomless-ridge-60823.herokuapp.com/user/${email}`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'
